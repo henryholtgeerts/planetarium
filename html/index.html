@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <head>
+        <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+        <script>
+            window.AFRAME.registerComponent('camrender',{
+            'schema': {
+                // desired FPS
+                fps: {
+                    type: 'number',
+                    default: 90.0
+                },
+                // Id of the canvas element used for rendering the camera
+                cid: {
+                    type: 'string',
+                    default: 'camRenderer'
+                },
+                // Height of the renderer element
+                height: {
+                    type: 'number',
+                    default: 600,
+                },
+                // Width of the renderer element
+                width: {
+                    type: 'number',
+                    default: 800,
+                }
+            },
+            'update': function(oldData) {
+                var data = this.data
+                if (oldData.cid !== data.cid) {
+                    // Find canvas element to be used for rendering
+                    var canvasEl = document.getElementById(this.data.cid);
+                    // Create renderer
+                    this.renderer = new window.THREE.WebGLRenderer({
+                        antialias: true,
+                        canvas: canvasEl
+                    });
+                    // Set properties for renderer DOM element
+                    this.renderer.setPixelRatio( window.devicePixelRatio );
+                    this.renderer.domElement.crossorigin = "anonymous";
+                };
+                if (oldData.width !== data.width || oldData.height !== data.height) {
+                    // Set size of canvas renderer
+                    this.renderer.setSize(data.width/2, data.height/2);
+                    this.renderer.domElement.height = data.height;
+                    this.renderer.domElement.width = data.width;
+                };
+                if (oldData.fps !== data.fps) {
+                    // Set how often to call tick
+                    this.tick = window.AFRAME.utils.throttleTick(this.tick, 1000 / data.fps , this);
+                };
+            },
+            'tick': function(time, timeDelta) {
+                this.renderer.render( this.el.sceneEl.object3D , this.el.object3DMap.camera );
+            }
+            });
+
+            window.AFRAME.registerComponent('scenerender',{
+                'schema': {
+                // desired FPS
+                fps: {
+                    type: 'number',
+                    default: 90.0
+                },
+                // Id of the canvas element used for rendering the camera
+                cid: {
+                    type: 'string',
+                    default: 'camRenderer'
+                },
+                },
+                'update': function(oldData) {
+                var data = this.data
+                if (oldData.cid !== data.cid) {
+                    this.renderCanvas = document.getElementById(this.data.cid);
+                    this.renderCanvas.width = 4096;
+                    this.renderCanvas.height = 2048;
+                };
+                if (oldData.fps !== data.fps) {
+                    //Set how often to call tick
+                    this.tick = window.AFRAME.utils.throttleTick(this.tick, 1000 / data.fps , this);
+                };
+                },
+                'tick': function(time, timeDelta) {
+                const render = this.el.components.screenshot.getCanvas();
+                const ctx = this.renderCanvas.getContext('2d').drawImage(render, 0, 0);
+                }
+            });
+
+            window.AFRAME.registerComponent('canvas-updater', {
+            dependencies: ['geometry', 'material'],
+
+            tick: function () {
+                var el = this.el;
+                var material;
+
+                material = el.getObject3D('mesh').material;
+                if (!material.map) { return; }
+                material.map.needsUpdate = true;
+            }
+            });
+        </script>
+    </head>
+    <body>
+        <canvas id="cam2" style="position: absolute; top: 20px; left: 20px; z-index: 99; border-radius: 6px; overflow: hidden;"></canvas>
+        <a-scene>
+            <a-scene stats>
+                <a-assets>
+                  <canvas id="cam3"></canvas>
+                </a-assets>
+        
+                <!-- Projection Rig -->
+                <a-entity position="0 -100 -1000">
+                  <a-entity position="0 0.4 4" rotation="0 0 0">
+                    <a-camera active="false" wasd-controls="enabled: false;" fov="30" look-controls="enabled: false;" position="0 0 0" camrender="cid: cam2"></a-camera>
+                  </a-entity>
+                  <a-sphere position="0 0 0" rotation="0 180 0" radius="1" material="src:#cam3; opacity: 1; repeat: 1 1; shader: flat;" canvas-updater></a-sphere>
+                  <a-sphere position="0 0 0" rotation="90 90 0" radius="1.01" color="#000" phi-length="270" theta-length="270" material="shader: flat;"></a-sphere>
+                  <a-sphere position="0 0 0" rotation="90 90 0" radius="0.99" color="#000" material="shader: flat;"></a-sphere>
+                  <a-sphere position="0 0 0" radius="6" color="#000" material="side: back; shader: flat;"></a-sphere>
+                </a-entity>
+        
+                <!-- Scene source -->
+                <a-entity position="0 1.6 0" wasd-controls look-controls>
+                  <a-entity camera="active: true;" active="true" id="mainCam" position="0 0 0"></a-entity>
+                </a-entity>
+                <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+                <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
+                <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+                <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+                <a-sky color="#ECECEC"></a-sky> 
+              </a-scene>
+        </a-scene>
+    </body>
+</html
