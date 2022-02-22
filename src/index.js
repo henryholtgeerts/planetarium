@@ -89,7 +89,7 @@ window.AFRAME.registerComponent('scenerender',{
     },
     'tick': function(time, timeDelta) {
       const render = this.el.components.screenshot.getCanvas();
-      const ctx = this.renderCanvas.getContext('2d').drawImage(render, 0, 0);
+      this.renderCanvas.getContext('2d').drawImage(render, 0, 0);
     }
 });
 

@@ -48,7 +48,6 @@ const FRAGMENT_SHADER = [
     },
 
     init: function () {
-        var el = this.el;
         var self = this;
 
         self.canvas = this.data.cid;
@@ -179,7 +178,6 @@ const FRAGMENT_SHADER = [
 
     renderCapture: function (camera, size) {
         var autoClear = this.renderer.autoClear;
-        var el = this.el;
         var imageData;
         var output;
         var pixels;
