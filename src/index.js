@@ -9,6 +9,65 @@ import './aframe-components/domeRenderer';
 import './aframe-components/chromeMaterial';
 import 'aframe-orbit-controls';
 
+window.AFRAME.registerComponent('scene-controller', {
+  init: function () {
+    window.addEventListener('keydown', function(evt) {
+      switch ( evt.key ) {
+        case 'c': {
+          document.querySelector("#calibrate").setAttribute('visible', 'true');
+          break;
+        }
+        case 'v': {
+          document.querySelector("#calibrate").setAttribute('visible', 'false');
+          break;
+        }
+        case '1': {
+          document.querySelector("#wowvideo").setAttribute('visible', 'true');
+          document.querySelector("#wowvideo").components.material.material.map.image.play();
+          document.querySelector("#environment").setAttribute('visible', 'false');
+          break;
+        }
+        case '2': {
+          document.querySelector("#wowvideo").setAttribute('visible', 'false');
+          document.querySelector("#environment").setAttribute('visible', 'true');
+          document.querySelector("#environment").setAttribute('environment', {preset: 'starry'});
+          break;
+        }
+        case '2': {
+          document.querySelector("#wowvideo").setAttribute('visible', 'false');
+          document.querySelector("#environment").setAttribute('visible', 'true');
+          document.querySelector("#environment").setAttribute('environment', {preset: 'arches'});
+          break;
+        }
+        case '3': {
+          document.querySelector("#wowvideo").setAttribute('visible', 'false');
+          document.querySelector("#environment").setAttribute('visible', 'true');
+          document.querySelector("#environment").setAttribute('environment', {preset: 'moon'});
+          break;
+        }
+        case '4': {
+          document.querySelector("#wowvideo").setAttribute('visible', 'false');
+          document.querySelector("#environment").setAttribute('visible', 'true');
+          document.querySelector("#environment").setAttribute('environment', {preset: 'egypt'});
+          break;
+        }
+        case '5': {
+          document.querySelector("#wowvideo").setAttribute('visible', 'false');
+          document.querySelector("#environment").setAttribute('visible', 'true');
+          document.querySelector("#environment").setAttribute('environment', {preset: 'forest'});
+          break;
+        }
+        case '6': {
+          document.querySelector("#wowvideo").setAttribute('visible', 'false');
+          document.querySelector("#environment").setAttribute('visible', 'true');
+          document.querySelector("#environment").setAttribute('environment', {preset: 'default'});
+          break;
+        }
+      }
+    })
+  }
+})
+
 window.AFRAME.registerComponent('camrender',{
   'schema': {
      // desired FPS

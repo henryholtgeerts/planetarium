@@ -6,19 +6,14 @@ const App = memo(() => {
   return (
     <div>
       <a-scene>
-        <a-assets>
-          <a-asset-item id="room" src="/room2.glb"></a-asset-item>
-        </a-assets>
-        <a-entity camera="active: true; fov: 30; zoom: 1" look-controls="enabled: false;" orbit-controls="target: 0 -1000 0; minDistance: 0.5; maxDistance: 15; initialPosition: 0 -1000 -5; enableKeys: false;"></a-entity>
+        <a-entity id="orbitcam" camera="active: true; fov: 30; zoom: 1" look-controls="enabled: false;" orbit-controls="target: 0 -1000 0; minDistance: 0.5; maxDistance: 15; initialPosition: 0 -1000 -5; enableKeys: true;"></a-entity>
         <a-sphere position="0 -1000 0" rotation="-90 -90 0" radius="1.25" color="#EF2D5E" chrome-material="src:#camera" phi-length="90"></a-sphere>
         <a-sphere position="0 -1000 0" radius="10" material="color: #000; side: double; shader: flat"></a-sphere>
-        <a-entity position="0 0.2 0" id="camera" wasd-controls="enabled: true;"></a-entity>
-        <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
-        <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
-        <a-plane position="0 0 -4" rotation="-90 0 0" width="40" height="40" color="#7BC8A4"></a-plane>
-        <a-entity gltf-model="#room" position="-1 0.5 -3"></a-entity>
-        <a-sphere color="#fff" radius="8" wireframe="true" material="side: double"></a-sphere>
-        <a-sky color="#000"></a-sky>
+        <a-entity position="0 0.2 0" id="camera"></a-entity>
+        <a-videosphere visible="true" id="wowvideo" src="url(./video.mp4)" autoplay="false" loop="false" rotation="0 -90 0"></a-videosphere>
+        {/* <a-entity id="environment" environment="preset: starry"></a-entity> */}
+        <a-sky id="calibrate" visible="false" color="white" material="wireframe: true;"></a-sky>
+        <a-entity scene-controller></a-entity>
       </a-scene>
     </div>
   );
